@@ -1,0 +1,16 @@
+node_modules
+dist
+.env
+.env.test
+coverage
+.DS_Store
+
+# Prisma / local artifacts
+*.db
+*.db-journal
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

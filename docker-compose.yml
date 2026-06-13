@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: titanbay-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: titanbay
+      POSTGRES_PASSWORD: titanbay
+      POSTGRES_DB: titanbay_private_markets
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
