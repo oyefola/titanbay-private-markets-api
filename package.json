@@ -11,7 +11,8 @@
     "db:generate": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:integration": "DATABASE_URL=postgresql://titanbay:titanbay@localhost:5432/titanbay_private_markets_test vitest run test/integration"
   },
   "keywords": [],
   "author": "",
