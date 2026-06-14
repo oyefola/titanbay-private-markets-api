@@ -3,12 +3,12 @@ import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import { prisma } from '../db'
 import {
   CreateFundBodySchema,
-  ErrorResponseSchema,
   FundIdParamsSchema,
   FundResponseSchema,
   FundsResponseSchema,
   UpdateFundBodySchema,
 } from '../schemas/fund.schema'
+import { ErrorResponseSchema } from "../schemas/error.schema"
 
 function serializeFund(fund: {
   id: string

@@ -29,12 +29,6 @@ export const CreateFundBodySchema = Type.Object(
     additionalProperties: false,
   }
 );
-export const ErrorResponseSchema = Type.Object({
-  error: Type.Object({
-    code: Type.String(),
-    message: Type.String(),
-  }),
-});
 export const FundResponseSchema = Type.Object({
   id: Type.String(),
   name: Type.String(),
