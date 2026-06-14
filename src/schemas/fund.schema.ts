@@ -43,5 +43,16 @@ export const FundResponseSchema = Type.Object({
   status: FundStatusSchema,
   created_at: Type.String(),
 });
-
+export const UpdateFundBodySchema = Type.Object(
+  {
+    id: Type.String({ pattern: UUID_PATTERN }),
+    name: Type.String({ minLength: 1 }),
+    vintage_year: Type.Integer({ minimum: 1900 }),
+    target_size_usd: Type.Number({ exclusiveMinimum: 0 }),
+    status: FundStatusSchema,
+  },
+  {
+    additionalProperties: false,
+  }
+);
 export const FundsResponseSchema = Type.Array(FundResponseSchema);
