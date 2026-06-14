@@ -12,7 +12,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:integration": "DATABASE_URL=postgresql://titanbay:titanbay@localhost:5432/titanbay_private_markets_test vitest run test/integration"
+    "test:integration": "DATABASE_URL=postgresql://titanbay:titanbay@localhost:5432/titanbay_private_markets_test vitest run test/integration",
+    "test:test-db": "DATABASE_URL=postgresql://titanbay:titanbay@localhost:5432/titanbay_private_markets_test vitest run"
   },
   "keywords": [],
   "author": "",
