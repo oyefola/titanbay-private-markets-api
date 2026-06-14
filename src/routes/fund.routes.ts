@@ -3,6 +3,8 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { prisma } from "../db";
 import {
   CreateFundBodySchema,
+  ErrorResponseSchema,
+  FundIdParamsSchema,
   FundResponseSchema,
   FundsResponseSchema,
 } from "../schemas/fund.schema";
@@ -47,7 +49,37 @@ export async function registerFundRoutes(app: FastifyInstance) {
       return reply.status(200).send(funds.map(serializeFund));
     }
   );
+    
+  server.get(
+  "/funds/:id",
+  {
+    schema: {
+      params: FundIdParamsSchema,
+      response: {
+        200: FundResponseSchema,
+        404: ErrorResponseSchema,
+      },
+    },
+  },
+  async (request, reply) => {
+    const { id } = request.params;
 
+    const fund = await prisma.fund.findUnique({
+      where: { id },
+    });
+
+    if (!fund) {
+      return reply.status(404).send({
+        error: {
+          code: "NOT_FOUND",
+          message: "Fund not found",
+        },
+      });
+    }
+
+    return reply.status(200).send(serializeFund(fund));
+  }
+  );
   server.post(
     "/funds",
     {

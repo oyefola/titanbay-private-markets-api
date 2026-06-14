@@ -1,5 +1,17 @@
 import { Type } from "@sinclair/typebox";
 
+const UUID_PATTERN =
+  "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$";
+
+export const FundIdParamsSchema = Type.Object(
+  {
+    id: Type.String({ pattern: UUID_PATTERN }),
+  },
+  {
+    additionalProperties: false,
+  }
+);
+
 export const FundStatusSchema = Type.Union([
   Type.Literal("Fundraising"),
   Type.Literal("Investing"),
@@ -17,14 +29,19 @@ export const CreateFundBodySchema = Type.Object(
     additionalProperties: false,
   }
 );
-
+export const ErrorResponseSchema = Type.Object({
+  error: Type.Object({
+    code: Type.String(),
+    message: Type.String(),
+  }),
+});
 export const FundResponseSchema = Type.Object({
-  id: Type.String({ format: "uuid" }),
+  id: Type.String(),
   name: Type.String(),
   vintage_year: Type.Integer(),
   target_size_usd: Type.Number(),
   status: FundStatusSchema,
-  created_at: Type.String({ format: "date-time" }),
+  created_at: Type.String(),
 });
 
 export const FundsResponseSchema = Type.Array(FundResponseSchema);
