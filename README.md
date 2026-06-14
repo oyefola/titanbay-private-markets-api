@@ -12,37 +12,7 @@ This project implements the Titanbay private markets take-home task using TypeSc
 * PostgreSQL
 * Docker Compose
 * Vitest
-## Why This Tech Stack?
 
-I chose this stack because it balances speed of delivery, type safety, validation, and maintainability for a small REST API.
-
-### TypeScript
-
-TypeScript was used because it provides compile-time safety around request handlers, database access, and response formatting. This is especially useful in an API where the response shape needs to match a provided specification.
-
-### Fastify
-
-Fastify was chosen over a more minimal Express setup because validation is a key requirement of the task. Fastify supports route-level schemas for request bodies, route parameters, and responses, making it easier to keep validation close to each endpoint.
-
-### TypeBox
-
-TypeBox works naturally with Fastify’s JSON Schema validation model. It allows request and response schemas to be defined once and reused for runtime validation while still giving TypeScript useful type inference.
-
-### Prisma
-
-Prisma was chosen as the PostgreSQL access layer because it provides a clean TypeScript API, schema migrations, generated types, and safer database interactions than writing raw SQL throughout the route handlers.
-
-### PostgreSQL
-
-PostgreSQL is required by the task and is a good fit for this domain because the data is relational. Funds, investors, and investments have clear relationships that can be represented with foreign keys and database constraints.
-
-### Docker Compose
-
-Docker Compose is used to make the local PostgreSQL setup repeatable. This avoids requiring reviewers to install and configure PostgreSQL manually.
-
-### Vitest
-
-Vitest was chosen for testing because it works well with TypeScript and supports both fast unit tests and integration tests. The integration tests use Fastify’s `app.inject()` to test real HTTP routes without needing to start a separate server process.
 ## Features
 
 * RESTful JSON API
@@ -363,20 +333,19 @@ DATABASE_URL="postgresql://titanbay:titanbay@localhost:5432/titanbay_private_mar
 
 ### Fastify
 
-Fastify was chosen because the task places emphasis on validation and error handling. Fastify supports route-level schemas for request validation and response serialization.
-
-### Prisma
-
-Prisma was chosen to provide type-safe database access, migrations, and a clean interface between TypeScript and PostgreSQL.
-
-### PostgreSQL
-
-PostgreSQL is used as required by the task. The schema uses relational constraints to model the relationship between funds, investors, and investments.
+Fastify was chosen over a more minimal Express setup because validation is a key requirement of the task. Fastify supports route-level schemas for request bodies, route parameters, and responses, making it easier to keep validation close to each endpoint.
 
 ### TypeBox
 
-TypeBox was used with Fastify to define JSON schemas that also provide TypeScript inference.
+TypeBox works naturally with Fastify’s JSON Schema validation model. It allows request and response schemas to be defined once and reused for runtime validation while still giving TypeScript useful type inference.
 
+### Prisma
+
+Prisma was chosen as the PostgreSQL access layer because it provides a clean TypeScript API, schema migrations, generated types, and safer database interactions than writing raw SQL throughout the route handlers.
+
+### Vitest
+
+Vitest was chosen for testing because it works well with TypeScript and supports both fast unit tests and integration tests. The integration tests use Fastify’s `app.inject()` to test real HTTP routes without needing to start a separate server process.
 ### API field naming
 
 The API uses `snake_case` field names to match the provided API specification.
