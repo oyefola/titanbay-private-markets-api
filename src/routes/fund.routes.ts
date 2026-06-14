@@ -1,20 +1,69 @@
-import type { FastifyInstance } from "fastify";
-import { prisma } from "../db.js";
+import { FastifyInstance } from "fastify";
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import { prisma } from "../db";
+import {
+  CreateFundBodySchema,
+  FundResponseSchema,
+  FundsResponseSchema,
+} from "../schemas/fund.schema";
+
+function serializeFund(fund: {
+  id: string;
+  name: string;
+  vintage_year: number;
+  target_size_usd: unknown;
+  status: "Fundraising" | "Investing" | "Closed";
+  created_at: Date;
+}) {
+  return {
+    id: fund.id,
+    name: fund.name,
+    vintage_year: fund.vintage_year,
+    target_size_usd: Number(fund.target_size_usd),
+    status: fund.status,
+    created_at: fund.created_at.toISOString(),
+  };
+}
 
 export async function registerFundRoutes(app: FastifyInstance) {
-  app.get("/funds", async (_request, reply) => {
-    const funds = await prisma.fund.findMany({
-      orderBy: {
-        created_at: "asc",
-      },
-    });
+  const server = app.withTypeProvider<TypeBoxTypeProvider>();
 
-    return reply.status(200).send(
-      funds.map((fund) => ({
-        ...fund,
-        target_size_usd: Number(fund.target_size_usd),
-        created_at: fund.created_at.toISOString(),
-      }))
-    );
-  });
+  server.get(
+    "/funds",
+    {
+      schema: {
+        response: {
+          200: FundsResponseSchema,
+        },
+      },
+    },
+    async (_request, reply) => {
+      const funds = await prisma.fund.findMany({
+        orderBy: {
+          created_at: "asc",
+        },
+      });
+
+      return reply.status(200).send(funds.map(serializeFund));
+    }
+  );
+
+  server.post(
+    "/funds",
+    {
+      schema: {
+        body: CreateFundBodySchema,
+        response: {
+          201: FundResponseSchema,
+        },
+      },
+    },
+    async (request, reply) => {
+      const fund = await prisma.fund.create({
+        data: request.body,
+      });
+
+      return reply.status(201).send(serializeFund(fund));
+    }
+  );
 }
